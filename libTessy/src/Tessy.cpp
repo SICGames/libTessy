@@ -9,59 +9,80 @@ int TessyAPI_Initialize(const char* tessdatapath, const char *languages, OcrEngi
 /// Wrapper for TessBaseAPI::Recongize();
 /// </summary>
 /// <returns>If error, returns -1</returns>
-int Tessy_Recongize() {
+int TessyAPI_Recognize() {
 	if (tessbaseapi) 
 	{
 		return tessbaseapi->Recognize(0);
 	}
 	return -1;
 }
-void Tessy_Clear() {
+void TessyAPI_Clear() {
 	tessbaseapi->Clear();
 }
-void Tessy_SetImage(const unsigned char* data, uint width, uint height, uint channels, uint stride) {
+void TessyAPI_SetImage(const unsigned char* data, uint width, uint height, uint channels, uint stride) {
 	tessbaseapi->SetImage(data, width, height, channels, stride);
 }
-void Tessy_Shutdown() {
+void TessyAPI_Shutdown() {
 	tessbaseapi->End();
 	delete tessbaseapi;
 }
-const char* Tessy_GetUTF8Text() {
+const char* TessyAPI_GetUTF8Text() {
 	return tessbaseapi->GetUTF8Text();
 }
-void Tessy_SetPageSegMode(PageSegMode mode) {
+void TessyAPI_SetPageSegMode(PageSegMode mode) {
 	tessbaseapi->SetPageSegMode(mode);
 }
-void Tessy_SetSourceResolution(UINT ppi) {
+void TessyAPI_SetSourceResolution(UINT ppi) {
 	tessbaseapi->SetSourceResolution(ppi);
 }
 
-const TESSYWORDS* Tessy_GetWords() 
+void TessyAPI_GetWords(TessyWords** wordsArray, size_t* size) 
 {
 	ResultIterator* ri = tessbaseapi->GetIterator();
 	PageIteratorLevel level = tesseract::RIL_WORD;
-	std::vector<TESSYWORDS> words;
+	auto words = new std::vector<TessyWords>();
 	if (ri != 0) {
 		do {
 			char* cWord = ri->GetUTF8Text(level);
 			if (cWord != NULL) {
-				std::string wordStr = std::string(cWord);
+				const char* word = cWord;
 				float confidence = ri->Confidence(level);
 				int x, y, width, height;
 				ri->BoundingBox(level, &x, &y, &width, &height);
-				TESSYWORDS tessywords;
-				tessywords.Word = wordStr;
+				TessyWords tessywords;
+				tessywords.Word = word;
 				tessywords.confidence = confidence;
-				tessywords.BoundingBox = BOUNDINGBOX(x, y, width, height);
+				tessywords.BoundingBox.x = x;
+				tessywords.BoundingBox.y = y;
+				tessywords.BoundingBox.width = width - x;
+				tessywords.BoundingBox.height = height - y;
 
-				words.push_back(tessywords);
-
+				words->push_back(tessywords);
+				delete[] word;
 			}
 		} while (ri->Next(level));
 	}
-	TESSYWORDS* result = words.data();
-	return result;
+	*size = words->size();
+	*wordsArray = (TessyWords*)malloc(*size * sizeof(TessyWords));
+	for (auto i = 0; i < *size; i++) 
+	{
+		(*wordsArray)[i].Word = words->at(i).Word;
+
+		(*wordsArray)[i].confidence = words->at(i).confidence;
+		(*wordsArray)[i].BoundingBox.x = words->at(i).BoundingBox.x;
+		(*wordsArray)[i].BoundingBox.y = words->at(i).BoundingBox.y;
+		(*wordsArray)[i].BoundingBox.width = words->at(i).BoundingBox.width;
+		(*wordsArray)[i].BoundingBox.height = words->at(i).BoundingBox.height;
+	}
 }
-const char* Tessy_GetVersion() {
-	return tessbaseapi->Version();
+
+void TessyAPI_FreeWords(TessyWords* words) {
+	free(words);
+}
+const char* TessyAPI_GetVersion() {
+	return tesseract::TessBaseAPI::Version();
+}
+const bool TessyAPI_IsInitialized() 
+{
+	return isInitialized;
 }

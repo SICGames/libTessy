@@ -3,24 +3,12 @@
 #include <Windows.h>
 #include <string>
 
-struct BOUNDINGBOX {
+typedef struct _BoundingBox {
 	int x, y, width, height;
-	BOUNDINGBOX() : x(0),y(0),width(0), height(0) 
-	{
-
-	}
-	BOUNDINGBOX(int X, int Y, int Width, int Height) : x(X), y(Y), width(Width), height(Height) 
-	{
-
-	}
-};
-struct TESSYWORDS
+} BoundingBox;
+typedef struct _TessyWords
 {
-	std::string Word;
+	const char* Word;
 	float confidence;
-	BOUNDINGBOX BoundingBox;
-	TESSYWORDS() : Word(""), confidence(0.0f), BoundingBox()
-	{
-
-	}
-};
+	BoundingBox BoundingBox;
+} TessyWords;
