@@ -66,13 +66,15 @@ void TessyAPI_GetWords(TessyWords** wordsArray, size_t* size)
 	*wordsArray = (TessyWords*)malloc(*size * sizeof(TessyWords));
 	for (auto i = 0; i < *size; i++) 
 	{
-		(*wordsArray)[i].Word = words->at(i).Word;
+		if (*wordsArray) {
+			(*wordsArray)[i].Word = words->at(i).Word;
 
-		(*wordsArray)[i].confidence = words->at(i).confidence;
-		(*wordsArray)[i].BoundingBox.x = words->at(i).BoundingBox.x;
-		(*wordsArray)[i].BoundingBox.y = words->at(i).BoundingBox.y;
-		(*wordsArray)[i].BoundingBox.width = words->at(i).BoundingBox.width;
-		(*wordsArray)[i].BoundingBox.height = words->at(i).BoundingBox.height;
+			(*wordsArray)[i].confidence = words->at(i).confidence;
+			(*wordsArray)[i].BoundingBox.x = words->at(i).BoundingBox.x;
+			(*wordsArray)[i].BoundingBox.y = words->at(i).BoundingBox.y;
+			(*wordsArray)[i].BoundingBox.width = words->at(i).BoundingBox.width;
+			(*wordsArray)[i].BoundingBox.height = words->at(i).BoundingBox.height;
+		}
 	}
 }
 
@@ -81,8 +83,4 @@ void TessyAPI_FreeWords(TessyWords* words) {
 }
 const char* TessyAPI_GetVersion() {
 	return tesseract::TessBaseAPI::Version();
-}
-const bool TessyAPI_IsInitialized() 
-{
-	return isInitialized;
 }

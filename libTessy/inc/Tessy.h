@@ -12,7 +12,6 @@ bool isInitialized;
 #pragma endregion
 
 TESSY_API int TessyAPI_Initialize(const char*, const char*, OcrEngineMode);
-TESSY_API const bool TessyAPI_IsInitialized();
 TESSY_API int TessyAPI_Recognize();
 TESSY_API void TessyAPI_Clear();
 TESSY_API void TessyAPI_SetImage(const unsigned char*, uint, uint, uint, uint);

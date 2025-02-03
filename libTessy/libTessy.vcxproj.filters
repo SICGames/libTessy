@@ -13,25 +13,37 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Tesseract">
+      <UniqueIdentifier>{393a1139-e33b-4107-b146-792c5f70373e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{8e3ca133-58cb-44a4-ae66-f8fbb1727c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Words">
+      <UniqueIdentifier>{fc9918ee-d453-4f6c-88e7-ee68847e741a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tesseract">
+      <UniqueIdentifier>{7e1e799e-0e9b-42bb-be49-d40dee2bdfe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Common.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\TessyAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Tessy.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="inc\TesseractHeaders.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Common.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="inc\TessyAPI.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Tessy.h">
+      <Filter>Header Files\Tesseract</Filter>
     </ClInclude>
     <ClInclude Include="inc\TessyWords.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Words</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +51,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Tessy.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tesseract</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
